@@ -9,32 +9,32 @@ import subscriptionsRoutes from "./routes/subscriptions.js";
 
 const app = express();
 
-// ✅ CORS — خليه يسمح لـ Netlify + localhost
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
-  "https://amazing-gnome-ef27d8.netlify.app/", // ✅ حط رابطك هنا
+  "https://amazing-gnome-ef27d8.netlify.app",
 ];
 
 app.use(
   cors({
     origin: (origin, cb) => {
-      // السماح للـ requests اللي بدون origin (زي Postman)
       if (!origin) return cb(null, true);
       if (allowedOrigins.includes(origin)) return cb(null, true);
-      return cb(new Error("Not allowed by CORS"));
+      return cb(null, false); // ✅ لا تطيح السيرفر
     },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// ✅ ضروري للـ preflight
 app.options("*", cors());
-
 app.use(express.json({ limit: "1mb" }));
 
-await adminRoutes.seedAdminIfNeeded();
+try {
+  await adminRoutes.seedAdminIfNeeded();
+} catch (e) {
+  console.error("⚠️ seedAdminIfNeeded failed:", e.message);
+}
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 
