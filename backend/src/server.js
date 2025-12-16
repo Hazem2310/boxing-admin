@@ -9,26 +9,9 @@ import subscriptionsRoutes from "./routes/subscriptions.js";
 
 const app = express();
 
-const allowedOrigins = [
-  "https://amazing-gnome-ef27d8.netlify.app",
-  "http://localhost:5173",
-  "http://localhost:3000",
-];
-
-app.use(
-  cors({
-    origin: (origin, cb) => {
-      if (!origin) return cb(null, true);
-      if (allowedOrigins.includes(origin)) return cb(null, true);
-      return cb(null, false);
-    },
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-
-// ✅ preflight
-app.options("*", cors({ origin: allowedOrigins }));
+// ✅ مؤقت: اسمح للجميع (لإنهاء مشكلة CORS فورًا)
+app.use(cors());
+app.options("*", cors());
 
 app.use(express.json({ limit: "1mb" }));
 
@@ -47,4 +30,3 @@ app.use("/api/subscriptions", subscriptionsRoutes);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log("✅ Backend running on", port));
-console.log("=== SERVER VERSION: 2025-12-16 V1 ===");
