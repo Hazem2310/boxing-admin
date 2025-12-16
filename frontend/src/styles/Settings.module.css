@@ -1,0 +1,10 @@
+.card{
+  background: var(--card);
+  border:1px solid var(--stroke);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+  padding:22px;
+}
+.h2{ margin:0 0 8px; }
+.p{ margin:0 0 14px; color: var(--muted); }

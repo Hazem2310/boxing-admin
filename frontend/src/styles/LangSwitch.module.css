@@ -1,0 +1,28 @@
+.wrap{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  padding:10px;
+  border-radius:14px;
+  backdrop-filter: blur(12px);
+}
+.wrapCompact{
+  display:flex;
+  align-items:center;
+}
+.label{
+  font-size:12px;
+  color: rgba(255,255,255,.70);
+}
+.btns{ display:flex; gap:8px; }
+.btn, .active{
+  padding:9px 10px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.92);
+  cursor:pointer;
+}
+.active{ background: rgba(255,255,255,.16); }

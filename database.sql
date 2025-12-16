@@ -1,0 +1,45 @@
+-- Boxing Admin (Bilingual + Members/Subscriptions) DB
+CREATE DATABASE IF NOT EXISTS boxing_admin
+  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE boxing_admin;
+
+CREATE TABLE IF NOT EXISTS admins (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS exercises (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(120) NOT NULL,
+  level ENUM('beginner','intermediate','advanced') NOT NULL DEFAULT 'beginner',
+  category VARCHAR(80) NOT NULL DEFAULT 'General',
+  duration_sec INT NOT NULL DEFAULT 180,
+  description TEXT,
+  video_url VARCHAR(500),
+  equipment VARCHAR(200),
+  is_deleted TINYINT(1) NOT NULL DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS members (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(120) NOT NULL,
+  phone VARCHAR(30),
+  email VARCHAR(120),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  is_deleted TINYINT(1) NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS subscriptions (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  member_id INT NOT NULL,
+  start_date DATE NOT NULL,
+  end_date DATE NOT NULL,
+  plan VARCHAR(40) NOT NULL DEFAULT 'monthly',
+  notes VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_sub_member FOREIGN KEY (member_id) REFERENCES members(id)
+);
