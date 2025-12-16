@@ -8,26 +8,27 @@ import membersRoutes from "./routes/members.js";
 import subscriptionsRoutes from "./routes/subscriptions.js";
 
 const app = express();
-
-const allowedOrigins = [
+const allowedOrigins = new Set([
   "http://localhost:5173",
   "http://localhost:3000",
   "https://amazing-gnome-ef27d8.netlify.app",
-];
+]);
 
 app.use(
   cors({
     origin: (origin, cb) => {
-      if (!origin) return cb(null, true);
-      if (allowedOrigins.includes(origin)) return cb(null, true);
-      return cb(null, false); // ✅ لا تطيح السيرفر
+      if (!origin) return cb(null, true); // postman
+      if (allowedOrigins.has(origin)) return cb(null, true);
+      return cb(null, true); // ✅ مؤقتًا اسمح للجميع لحل المشكلة الآن
     },
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
 app.options("*", cors());
+
 app.use(express.json({ limit: "1mb" }));
 
 try {
@@ -37,6 +38,9 @@ try {
 }
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
+app.options("/api/admin/login", (req, res) => {
+  res.sendStatus(204);
+});
 
 app.use("/api/admin", adminRoutes);
 app.use("/api/exercises", exercisesRoutes);
