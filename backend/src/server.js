@@ -42,3 +42,4 @@ app.use("/api/subscriptions", subscriptionsRoutes);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log("✅ Backend running on", port));
+console.log("=== SERVER VERSION: 2025-12-16 V1 ===");
