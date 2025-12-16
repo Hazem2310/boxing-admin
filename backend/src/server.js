@@ -8,26 +8,24 @@ import membersRoutes from "./routes/members.js";
 import subscriptionsRoutes from "./routes/subscriptions.js";
 
 const app = express();
-const allowedOrigins = new Set([
+import cors from "cors";
+
+const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
   "https://amazing-gnome-ef27d8.netlify.app",
-]);
+];
 
 app.use(
   cors({
-    origin: (origin, cb) => {
-      if (!origin) return cb(null, true); // postman
-      if (allowedOrigins.has(origin)) return cb(null, true);
-      return cb(null, true); // ✅ مؤقتًا اسمح للجميع لحل المشكلة الآن
-    },
-    credentials: true,
+    origin: allowedOrigins, // ✅ أبسط وأضمن
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-app.options("*", cors());
+// ✅ لازم للـ preflight
+app.options("*", cors({ origin: allowedOrigins }));
 
 app.use(express.json({ limit: "1mb" }));
 
